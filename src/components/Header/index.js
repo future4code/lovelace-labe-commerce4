@@ -10,7 +10,12 @@ export default class Header extends Component {
       <Navbar>
         <ImagemLogo src={Logo}></ImagemLogo>
         <Form>
-          <Input type="search" placeholder="Pesquisar" />
+          <Input
+            value={this.props.inputBusca}
+            onChange={this.props.onChangeBusca}
+            type="search"
+            placeholder="Pesquisar"
+          />
           <Button>
             <FontAwesomeIcon icon={faSearch} />
           </Button>

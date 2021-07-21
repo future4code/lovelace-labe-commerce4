@@ -8,10 +8,10 @@ export default class Card extends Component {
   render() {
     return (
       <CardBox>
-        <Imagem src={Destino} />
-        <Titulo>Nome do Destino</Titulo>
+        <Imagem src={this.props.imageUrl} />
+        <Titulo>{this.props.name}</Titulo>
         <Descricao>
-          Viagem a partir de <strong>R$ 4.000</strong>
+          Viagem a partir de <strong>R${this.props.value}</strong>
         </Descricao>
         <Button>
           Comprar
