@@ -30,7 +30,6 @@ export const Button = styled.button`
   border: none;
   border-radius: 0px 5px 5px 0px;
   background-color: #fff;
-  cursor: pointer;
 `;
 
 export const Carrinho = styled(FontAwesomeIcon)`
