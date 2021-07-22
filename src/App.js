@@ -140,8 +140,15 @@ class App extends React.Component {
   onChangeValorMinimo = (event) => {
     this.setState({ inputValorMinimo: event.target.value });
   };
+
   onChangeValorMaximo = (event) => {
-    this.setState({ inputValorMaximo: event.target.value });
+    let valor = event.target.value;
+
+    if (valor < this.state.inputValorMinimo) {
+      valor = this.state.inputValorMinimo;
+    }
+
+    this.setState({ inputValorMaximo: valor });
   };
 
   alteraOrdenacao = (event) => {
@@ -165,7 +172,9 @@ class App extends React.Component {
   filtroValorMinimo = (produto) => {
     const valorMinimo = Number(this.state.inputValorMinimo);
 
-    if (this.state.inputValorMinimo === "" || isNaN(valorMinimo)) return true;
+    if (this.state.inputValorMinimo === "" || isNaN(valorMinimo)) {
+      return true;
+    }
 
     return produto.value >= valorMinimo;
   };
@@ -223,12 +232,14 @@ class App extends React.Component {
                 type="number"
                 onChange={this.onChangeValorMinimo}
                 value={this.state.inputValorMinimo}
+                min="0"
               />
               <Label>Valor máximo:</Label>
               <Filtro
                 type="number"
                 onChange={this.onChangeValorMaximo}
                 value={this.state.inputValorMaximo}
+                min="0"
               />
             </div>
 
