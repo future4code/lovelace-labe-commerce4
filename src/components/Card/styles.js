@@ -4,12 +4,16 @@ import styled from "styled-components";
 export const CardBox = styled.div`
   display: flex;
   flex-direction: column;
-  box-shadow: 3px 3px 4px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.1);
   background-color: #fff;
+  border-radius: 5px;
+  overflow: hidden;
 `;
 
 export const Imagem = styled.img`
   width: 100%;
+  height: 200px;
+  object-fit: cover;
 `;
 
 export const Titulo = styled.h3`

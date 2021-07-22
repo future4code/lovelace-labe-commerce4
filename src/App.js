@@ -3,22 +3,45 @@ import "./App.css";
 import Header from "./components/Header";
 import Card from "./components/Card";
 import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faFacebookSquare,
+  faTwitterSquare,
+  faInstagramSquare,
+} from "@fortawesome/free-brands-svg-icons";
 
 // ESTILIZAÇÃO DO APP
 
 const Container = styled.div`
-  width: 75%;
+  width: 100%;
   margin: 0 auto;
+  max-width: 1130px;
+  padding: 0 15px;
 `;
+
 const Form = styled.form`
   display: flex;
-  justify-content: flex-end;
-  margin-right: 20px;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  align-items: center;
+`;
+const Label = styled.label`
+  font-size: 14px;
+  margin-right: 5px;
+`;
+
+const Filtro = styled.input`
+  border: 1px solid #000;
+  padding: 10px;
+  border-radius: 5px;
+  margin-right: 10px;
+  outline: none;
+  width: 100px;
 `;
 
 const Ordenar = styled.select`
-  padding: 15px;
-  border-radius: 10px;
+  padding: 10px;
+  border-radius: 5px;
   cursor: pointer;
 `;
 
@@ -26,11 +49,25 @@ const CardList = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
-  padding: 20px;
 `;
 
 const Titulo = styled.h1`
   text-align: center;
+  margin-top: 60px;
+`;
+
+const Footer = styled.footer`
+  padding: 20px;
+  background-color: #f8c544;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const RedesSociais = styled(FontAwesomeIcon)`
+  font-size: 40px;
+  margin-right: 10px;
+  cursor: pointer;
 `;
 
 class App extends React.Component {
@@ -96,6 +133,22 @@ class App extends React.Component {
     ],
     inputBusca: "",
     ordenacao: "ASC",
+    inputValorMinimo: "",
+    inputValorMaximo: "",
+  };
+
+  onChangeValorMinimo = (event) => {
+    this.setState({ inputValorMinimo: event.target.value });
+  };
+
+  onChangeValorMaximo = (event) => {
+    let valor = event.target.value;
+
+    if (valor < this.state.inputValorMinimo) {
+      valor = this.state.inputValorMinimo;
+    }
+
+    this.setState({ inputValorMaximo: valor });
   };
 
   alteraOrdenacao = (event) => {
@@ -107,12 +160,6 @@ class App extends React.Component {
   };
 
   filtroPorNome = (produto) => {
-    console.log(
-      produto.name,
-      this.state.inputBusca,
-      produto.name.toLowerCase().includes(this.state.inputBusca.toLowerCase())
-    );
-
     if (
       produto.name.toLowerCase().includes(this.state.inputBusca.toLowerCase())
     ) {
@@ -122,8 +169,29 @@ class App extends React.Component {
     return false;
   };
 
+  filtroValorMinimo = (produto) => {
+    const valorMinimo = Number(this.state.inputValorMinimo);
+
+    if (this.state.inputValorMinimo === "" || isNaN(valorMinimo)) {
+      return true;
+    }
+
+    return produto.value >= valorMinimo;
+  };
+
+  filtroValorMaximo = (produto) => {
+    const valorMaximo = Number(this.state.inputValorMaximo);
+
+    if (this.state.inputValorMaximo === "" || isNaN(valorMaximo)) return true;
+
+    return produto.value <= valorMaximo;
+  };
+
   filtrarLista = () => {
-    const listaFiltrada = this.state.produtos.filter(this.filtroPorNome);
+    const listaFiltrada = this.state.produtos
+      .filter(this.filtroPorNome)
+      .filter(this.filtroValorMinimo)
+      .filter(this.filtroValorMaximo);
 
     listaFiltrada.sort((a, b) => {
       if (this.state.ordenacao === "ASC") {
@@ -156,7 +224,25 @@ class App extends React.Component {
         />
         <Container>
           <Titulo>Confira nossos destinos</Titulo>
+
           <Form>
+            <div>
+              <Label>Valor mínimo:</Label>
+              <Filtro
+                type="number"
+                onChange={this.onChangeValorMinimo}
+                value={this.state.inputValorMinimo}
+                min="0"
+              />
+              <Label>Valor máximo:</Label>
+              <Filtro
+                type="number"
+                onChange={this.onChangeValorMaximo}
+                value={this.state.inputValorMaximo}
+                min="0"
+              />
+            </div>
+
             <Ordenar
               onChange={this.alteraOrdenacao}
               value={this.state.ordenacao}
@@ -175,8 +261,15 @@ class App extends React.Component {
                 imageUrl={produto.imageUrl}
               />
             ))}
+
+            {itensFiltrados.length === 0 && <p>Nenhum item encontrado</p>}
           </CardList>
         </Container>
+        <Footer>
+          <RedesSociais icon={faFacebookSquare} />
+          <RedesSociais icon={faInstagramSquare} />
+          <RedesSociais icon={faTwitterSquare} />
+        </Footer>
       </>
     );
   }

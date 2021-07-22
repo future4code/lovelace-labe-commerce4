@@ -14,22 +14,26 @@ export const ImagemLogo = styled.img`
   height: 80px;
   margin-left: 30px;
 `;
-export const Form = styled.form`
-  width: 40%;
+export const InputContainer = styled.div`
+  width: 100%;
+  max-width: 500px;
+  position: relative;
+
+  svg {
+    color: #000;
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+  }
 `;
 
 export const Input = styled.input`
-  width: 80%;
-  padding: 8px 10px;
-  border-radius: 5px 0 0px 5px;
+  width: 100%;
+  padding: 8px 36px 8px 10px;
+  border-radius: 5px;
   outline: none;
-`;
-
-export const Button = styled.button`
-  padding: 5px;
-  border: none;
-  border-radius: 0px 5px 5px 0px;
-  background-color: #fff;
+  border: 1px solid #eee;
 `;
 
 export const Carrinho = styled(FontAwesomeIcon)`
