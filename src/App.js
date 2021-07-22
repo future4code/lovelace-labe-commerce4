@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 import Header from "./components/Header";
 import Card from "./components/Card";
+import CardDev from "./components/CardDev";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -17,6 +18,7 @@ const Container = styled.div`
   margin: 0 auto;
   max-width: 1130px;
   padding: 0 15px;
+  min-height: 50vh;
 `;
 
 const Form = styled.form`
@@ -32,7 +34,7 @@ const Label = styled.label`
 
 const Filtro = styled.input`
   border: 1px solid #000;
-  padding: 10px;
+  padding: 5px;
   border-radius: 5px;
   margin-right: 10px;
   outline: none;
@@ -40,7 +42,7 @@ const Filtro = styled.input`
 `;
 
 const Ordenar = styled.select`
-  padding: 10px;
+  padding: 5px;
   border-radius: 5px;
   cursor: pointer;
 `;
@@ -68,6 +70,13 @@ const RedesSociais = styled(FontAwesomeIcon)`
   font-size: 40px;
   margin-right: 10px;
   cursor: pointer;
+`;
+
+const BoxDev = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 60px 0;
 `;
 
 class App extends React.Component {
@@ -142,13 +151,7 @@ class App extends React.Component {
   };
 
   onChangeValorMaximo = (event) => {
-    let valor = event.target.value;
-
-    if (valor < this.state.inputValorMinimo) {
-      valor = this.state.inputValorMinimo;
-    }
-
-    this.setState({ inputValorMaximo: valor });
+    this.setState({ inputValorMaximo: event.target.value });
   };
 
   alteraOrdenacao = (event) => {
@@ -181,8 +184,14 @@ class App extends React.Component {
 
   filtroValorMaximo = (produto) => {
     const valorMaximo = Number(this.state.inputValorMaximo);
+    const valorMinimo = Number(this.state.inputValorMinimo);
 
-    if (this.state.inputValorMaximo === "" || isNaN(valorMaximo)) return true;
+    if (
+      this.state.inputValorMaximo === "" ||
+      valorMaximo <= valorMinimo ||
+      isNaN(valorMaximo)
+    )
+      return true;
 
     return produto.value <= valorMaximo;
   };
@@ -252,19 +261,30 @@ class App extends React.Component {
               <option value="ASC">Crescente</option>
             </Ordenar>
           </Form>
-          <CardList>
-            {itensFiltrados.map((produto) => (
-              <Card
-                key={produto.id}
-                name={produto.name}
-                value={produto.value}
-                imageUrl={produto.imageUrl}
-              />
-            ))}
 
-            {itensFiltrados.length === 0 && <p>Nenhum item encontrado</p>}
-          </CardList>
+          {itensFiltrados.length > 0 ? (
+            <CardList>
+              {itensFiltrados.map((produto) => (
+                <Card
+                  key={produto.id}
+                  name={produto.name}
+                  value={produto.value}
+                  imageUrl={produto.imageUrl}
+                />
+              ))}
+            </CardList>
+          ) : (
+            <Mensagem>Nenhum item encontrado</Mensagem>
+          )}
         </Container>
+
+        <Titulo>Desenvolvedores</Titulo>
+        <BoxDev>
+          <CardDev></CardDev>
+          <CardDev></CardDev>
+          <CardDev></CardDev>
+        </BoxDev>
+
         <Footer>
           <RedesSociais icon={faFacebookSquare} />
           <RedesSociais icon={faInstagramSquare} />
@@ -274,5 +294,11 @@ class App extends React.Component {
     );
   }
 }
+
+const Mensagem = styled.p`
+  font-size: 20px;
+  text-align: center;
+  margin: 40px 0 0;
+`;
 
 export default App;

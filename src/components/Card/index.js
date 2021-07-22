@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Destino from "../../img/planeta-teste.jpg";
 import { CardBox, Imagem, Titulo, Descricao, Button, Carrinho } from "./styles";
 
 import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
