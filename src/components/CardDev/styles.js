@@ -10,6 +10,14 @@ export const Content = styled.div`
   opacity: 0;
   transition: 0.3s ease-in-out;
 
+  @media screen and (max-width: 576px) {
+    visibility: visible;
+    opacity: 1;
+  }
+  @media screen and (max-width: 768px) {
+    visibility: visible;
+    opacity: 1;
+  }
   p {
     margin-bottom: 0;
   }
@@ -27,14 +35,24 @@ export const ContainerCard = styled.div`
   transition: 0.4s ease-in-out;
   border-radius: 5px;
 
-  &:hover {
-    height: 420px;
+  @media screen and (max-width: 576px) {
+    height: auto;
+  }
 
-    ${Content} {
-      visibility: visible;
-      opacity: 1;
-      margin-top: -30px;
-      transition-delay: 0.3s;
+  @media screen and (max-width: 768px) {
+    height: auto;
+  }
+
+  @media screen and (min-width: 992px) {
+    &:hover {
+      height: 420px;
+
+      ${Content} {
+        visibility: visible;
+        opacity: 1;
+        margin-top: -30px;
+        transition-delay: 0.3s;
+      }
     }
   }
 `;

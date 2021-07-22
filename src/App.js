@@ -3,6 +3,7 @@ import "./App.css";
 import Header from "./components/Header";
 import Card from "./components/Card";
 import CardDev from "./components/CardDev";
+import Rodape from "./components/Rodape";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -26,6 +27,11 @@ const Form = styled.form`
   justify-content: space-between;
   margin-bottom: 20px;
   align-items: center;
+
+  @media screen and (max-width: 576px) {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
 `;
 const Label = styled.label`
   font-size: 14px;
@@ -56,6 +62,14 @@ const CardList = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
+
+  @media screen and (min-width: 768px) and (max-width: 992px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media screen and (max-width: 576px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const Titulo = styled.h1`
@@ -63,18 +77,16 @@ const Titulo = styled.h1`
   margin-top: 60px;
 `;
 
-const Footer = styled.footer`
-  padding: 20px;
-  background-color: #f8c544;
+const Valores = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: center;
+  @media screen and (max-width: 576px) {
+    display: flex;
+    margin-bottom: 10px;
+  }
 `;
 
-const RedesSociais = styled(FontAwesomeIcon)`
-  font-size: 40px;
-  margin-right: 10px;
-  cursor: pointer;
+const Valor = styled.div`
+  display: flex;
 `;
 
 const BoxDev = styled.div`
@@ -82,6 +94,11 @@ const BoxDev = styled.div`
   justify-content: center;
   align-items: center;
   margin: 60px 0;
+
+  @media screen and (max-width: 576px) {
+    flex-direction: column;
+    gap: 20px;
+  }
 `;
 
 class App extends React.Component {
@@ -167,6 +184,10 @@ class App extends React.Component {
     this.setState({ inputBusca: event.target.value });
   };
 
+  // onInputChange = ({ target }) => {
+  //   this.setState({ [target.name]: target.value });
+  // };
+
   filtroPorNome = (produto) => {
     if (
       produto.name.toLowerCase().includes(this.state.inputBusca.toLowerCase())
@@ -228,7 +249,6 @@ class App extends React.Component {
 
   render() {
     const itensFiltrados = this.filtrarLista();
-    console.log(this.state);
 
     return (
       <>
@@ -240,22 +260,27 @@ class App extends React.Component {
           <Titulo>Confira nossos destinos</Titulo>
 
           <Form>
-            <div>
-              <Label>Valor mínimo:</Label>
-              <Filtro
-                type="number"
-                onChange={this.onChangeValorMinimo}
-                value={this.state.inputValorMinimo}
-                min="0"
-              />
-              <Label>Valor máximo:</Label>
-              <Filtro
-                type="number"
-                onChange={this.onChangeValorMaximo}
-                value={this.state.inputValorMaximo}
-                min="0"
-              />
-            </div>
+            <Valores>
+              <Valor>
+                <Label>Valor mínimo:</Label>
+                <Filtro
+                  type="number"
+                  onChange={this.onChangeValorMinimo}
+                  value={this.state.inputValorMinimo}
+                  min="0"
+                />
+              </Valor>
+
+              <Valor>
+                <Label>Valor máximo:</Label>
+                <Filtro
+                  type="number"
+                  onChange={this.onChangeValorMaximo}
+                  value={this.state.inputValorMaximo}
+                  min="0"
+                />
+              </Valor>
+            </Valores>
 
             <Ordenar
               onChange={this.alteraOrdenacao}
@@ -290,11 +315,7 @@ class App extends React.Component {
           <CardDev></CardDev>
         </BoxDev>
 
-        <Footer>
-          <RedesSociais icon={faFacebookSquare} />
-          <RedesSociais icon={faInstagramSquare} />
-          <RedesSociais icon={faTwitterSquare} />
-        </Footer>
+        <Rodape />
       </>
     );
   }
