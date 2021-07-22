@@ -40,6 +40,11 @@ const Filtro = styled.input`
   outline: none;
   width: 100px;
 `;
+const Mensagem = styled.p`
+  font-size: 20px;
+  text-align: center;
+  margin: 40px 0 0;
+`;
 
 const Ordenar = styled.select`
   padding: 5px;
@@ -294,11 +299,5 @@ class App extends React.Component {
     );
   }
 }
-
-const Mensagem = styled.p`
-  font-size: 20px;
-  text-align: center;
-  margin: 40px 0 0;
-`;
 
 export default App;
