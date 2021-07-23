@@ -29,6 +29,16 @@ Lembrando que tudo isso é oferecido por preço$ ótimo$.
 - O usuário é capaz de adicionar filtros, busca e ordenação simultaneamente;
 - O usuário é capaz de retornar à visualização sem filtros.
 
+
+### Prints 
+
+![1](https://user-images.githubusercontent.com/8032317/126834292-287c4d47-6437-4353-a9d9-af641916986d.png)
+![2](https://user-images.githubusercontent.com/8032317/126834302-ce187cd9-4bde-4c2b-8845-68074825906f.png)
+![3](https://user-images.githubusercontent.com/8032317/126834308-5bb76881-1ebd-4ae5-ba87-649f7f470f9d.png)
+![4](https://user-images.githubusercontent.com/8032317/126834313-0b56f0c7-cc27-4be3-9bcd-bd72f3e509f2.png)
+![5](https://user-images.githubusercontent.com/8032317/126834327-df73e2bf-3b3b-4ba6-885c-f887ee386aeb.png)
+
+
 ### Status do projeto
 
 Concluído ✅
