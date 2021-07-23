@@ -1,4 +1,3 @@
-![6](https://user-images.githubusercontent.com/8032317/126835179-975cde52-13d9-4990-b7fe-e0f19792b4b1.png)
 # Dream Rocket
 
 ## Desenvolvedores
@@ -33,10 +32,16 @@ Lembrando que tudo isso é oferecido por preço$ ótimo$.
 
 ### Prints 
 
+![6](https://user-images.githubusercontent.com/8032317/126835179-975cde52-13d9-4990-b7fe-e0f19792b4b1.png)
+
 ![1](https://user-images.githubusercontent.com/8032317/126834292-287c4d47-6437-4353-a9d9-af641916986d.png)
+
 ![2](https://user-images.githubusercontent.com/8032317/126834302-ce187cd9-4bde-4c2b-8845-68074825906f.png)
+
 ![3](https://user-images.githubusercontent.com/8032317/126834308-5bb76881-1ebd-4ae5-ba87-649f7f470f9d.png)
+
 ![4](https://user-images.githubusercontent.com/8032317/126834313-0b56f0c7-cc27-4be3-9bcd-bd72f3e509f2.png)
+
 ![5](https://user-images.githubusercontent.com/8032317/126834327-df73e2bf-3b3b-4ba6-885c-f887ee386aeb.png)
 
 
