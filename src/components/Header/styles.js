@@ -13,6 +13,10 @@ export const Navbar = styled.header`
 export const ImagemLogo = styled.img`
   height: 80px;
   margin-left: 30px;
+
+  @media screen and (max-width: 576px) {
+    margin-left: 0;
+  }
 `;
 export const InputContainer = styled.div`
   width: 100%;
@@ -25,6 +29,10 @@ export const InputContainer = styled.div`
     top: 50%;
     right: 10px;
     transform: translateY(-50%);
+  }
+
+  @media screen and (max-width: 576px) {
+    margin: 0 20px;
   }
 `;
 
@@ -39,6 +47,9 @@ export const Input = styled.input`
 export const Carrinho = styled(FontAwesomeIcon)`
   font-size: 25px;
   color: #000;
-  cursor: pointer;
   margin-right: 30px;
+
+  @media screen and (max-width: 576px) {
+    margin-right: 10px;
+  }
 `;

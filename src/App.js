@@ -1,16 +1,21 @@
 import React from "react";
 import "./App.css";
+
 import Header from "./components/Header";
-import Intro from "./components/Intro"
+import Intro from "./components/Intro";
 import Card from "./components/Card";
 import CardDev from "./components/CardDev";
+import Rodape from "./components/Rodape";
+
+import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { Button } from "./components/Card/styles";
+
 import styled from "styled-components";
+
+import Ingrid from "./img/perfil.jpg";
+import Hugo from "./img/hugo.jpeg";
+import Leandro from "./img/leandro.jpeg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faFacebookSquare,
-  faTwitterSquare,
-  faInstagramSquare,
-} from "@fortawesome/free-brands-svg-icons";
 
 // ESTILIZAÇÃO DO APP
 
@@ -27,6 +32,11 @@ const Form = styled.form`
   justify-content: space-between;
   margin-bottom: 20px;
   align-items: center;
+
+  @media screen and (max-width: 576px) {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
 `;
 const Label = styled.label`
   font-size: 14px;
@@ -41,6 +51,11 @@ const Filtro = styled.input`
   outline: none;
   width: 100px;
 `;
+const Mensagem = styled.p`
+  font-size: 20px;
+  text-align: center;
+  margin: 40px 0 0;
+`;
 
 const Ordenar = styled.select`
   padding: 5px;
@@ -52,6 +67,14 @@ const CardList = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
+
+  @media screen and (min-width: 768px) and (max-width: 992px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media screen and (max-width: 576px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const Titulo = styled.h1`
@@ -59,18 +82,18 @@ const Titulo = styled.h1`
   margin-top: 60px;
 `;
 
-const Footer = styled.footer`
-  padding: 20px;
-  background-color: #f8c544;
+const Valores = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: center;
+  @media screen and (max-width: 576px) {
+    display: flex;
+    margin-bottom: 10px;
+  }
 `;
 
-const RedesSociais = styled(FontAwesomeIcon)`
-  font-size: 40px;
-  margin-right: 10px;
-  cursor: pointer;
+const Valor = styled.div`
+  display: flex;
+  line-height: 1;
+  align-items: center;
 `;
 
 const BoxDev = styled.div`
@@ -78,6 +101,88 @@ const BoxDev = styled.div`
   justify-content: center;
   align-items: center;
   margin: 60px 0;
+
+  @media screen and (max-width: 576px) {
+    flex-direction: column;
+    gap: 20px;
+  }
+`;
+
+// Estilização do Carrinho
+
+const TituloCarrinho = styled.h3`
+  text-align: center;
+`;
+const Carrinho = styled.div`
+  position: sticky;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  top: 25px;
+  padding: 25px;
+  margin: 25px;
+  max-height: 400px;
+  width: 100%;
+  max-width: 300px;
+
+  > p {
+    margin: 20px 0 0;
+  }
+`;
+
+const CarrinhoLista = styled.div`
+  overflow: auto;
+`;
+
+const CarrinhoItem = styled.div`
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+
+  ${Button} {
+    margin: 0;
+  }
+
+  & + & {
+    margin-top: 20px;
+  }
+`;
+
+const ValorProduto = styled.p``;
+
+const TotalCarrinho = styled.div`
+  text-align: end;
+  font-size: 16px;
+  font-weight: 700;
+`;
+const PrecoContainer = styled.div`
+  align-items: center;
+  display: flex;
+  font-size: 12px;
+
+  &,
+  p {
+    margin: 0;
+  }
+
+  p + p {
+    margin-left: 10px;
+  }
+`;
+
+const Icone = styled(FontAwesomeIcon)``;
+
+const BoxViagem = styled.div``;
+
+const NomeViagem = styled.p`
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
+`;
+
+const BoxCompras = styled.div`
+  display: flex;
+  align-items: flex-start;
 `;
 
 class App extends React.Component {
@@ -145,6 +250,7 @@ class App extends React.Component {
     ordenacao: "ASC",
     inputValorMinimo: "",
     inputValorMaximo: "",
+    carrinho: [],
   };
 
   onChangeValorMinimo = (event) => {
@@ -162,6 +268,17 @@ class App extends React.Component {
   onChangeBusca = (event) => {
     this.setState({ inputBusca: event.target.value });
   };
+
+  removeProduto = (id) => {
+    const carrinhoAtualizado = this.state.carrinho.filter((produto) => {
+      return id !== produto.id;
+    });
+    this.setState({ carrinho: carrinhoAtualizado });
+  };
+
+  // onInputChange = ({ target }) => {
+  //   this.setState({ [target.name]: target.value });
+  // };
 
   filtroPorNome = (produto) => {
     if (
@@ -222,9 +339,34 @@ class App extends React.Component {
     return listaFiltrada;
   };
 
+  somarCarrinho = (id) => {
+    let selecionarProduto = this.state.produtos.find(
+      (produto) => produto.id === id
+    );
+    let buscarCarrinho = this.state.carrinho.find(
+      (produto) => produto.id === id
+    );
+    if (buscarCarrinho !== undefined) {
+      const index = this.state.carrinho.findIndex(
+        (produto) => produto.id === id
+      );
+      const novoEstado = [...this.state.carrinho];
+      novoEstado[index].contador = this.state.carrinho[index].contador + 1;
+      novoEstado[index].total =
+        this.state.carrinho[index].value * novoEstado[index].contador;
+      return this.setState(novoEstado);
+    }
+    selecionarProduto.total = selecionarProduto.value;
+    selecionarProduto.contador = 1;
+    this.setState({ carrinho: [...this.state.carrinho, selecionarProduto] });
+  };
+
   render() {
     const itensFiltrados = this.filtrarLista();
-    console.log(this.state);
+    const totalCarrinho = this.state.carrinho.reduce(
+      (acc, curr) => acc + curr.total,
+      0
+    );
 
     return (
       <>
@@ -233,80 +375,119 @@ class App extends React.Component {
           onChangeBusca={this.onChangeBusca}
         />
 
-        <div>
-        <Intro>
-          
-        </Intro>
-        </div>
+        <Intro />
 
-        <Container>
-          <Titulo>Confira nossos destinos</Titulo>
+        <BoxCompras>
+          <Container>
+            <Titulo>Confira nossos destinos</Titulo>
 
-          <Form>
-            <div>
-              <Label>Valor mínimo:</Label>
-              <Filtro
-                type="number"
-                onChange={this.onChangeValorMinimo}
-                value={this.state.inputValorMinimo}
-                min="0"
-              />
-              <Label>Valor máximo:</Label>
-              <Filtro
-                type="number"
-                onChange={this.onChangeValorMaximo}
-                value={this.state.inputValorMaximo}
-                min="0"
-              />
-            </div>
+            <Form>
+              <Valores>
+                <Valor>
+                  <Label>Valor mínimo:</Label>
+                  <Filtro
+                    type="number"
+                    onChange={this.onChangeValorMinimo}
+                    value={this.state.inputValorMinimo}
+                    min="0"
+                  />
+                </Valor>
 
-            <Ordenar
-              onChange={this.alteraOrdenacao}
-              value={this.state.ordenacao}
-            >
-              <option value="">Ordenar</option>
-              <option value="DESC">Decrescente</option>
-              <option value="ASC">Crescente</option>
-            </Ordenar>
-          </Form>
+                <Valor>
+                  <Label>Valor máximo:</Label>
+                  <Filtro
+                    type="number"
+                    onChange={this.onChangeValorMaximo}
+                    value={this.state.inputValorMaximo}
+                    min="0"
+                  />
+                </Valor>
+              </Valores>
 
-          {itensFiltrados.length > 0 ? (
-            <CardList>
-              {itensFiltrados.map((produto) => (
-                <Card
-                  key={produto.id}
-                  name={produto.name}
-                  value={produto.value}
-                  imageUrl={produto.imageUrl}
-                />
+              <Ordenar
+                onChange={this.alteraOrdenacao}
+                value={this.state.ordenacao}
+              >
+                <option value="">Ordenar</option>
+                <option value="DESC">Decrescente</option>
+                <option value="ASC">Crescente</option>
+              </Ordenar>
+            </Form>
+
+            {itensFiltrados.length > 0 ? (
+              <CardList>
+                {itensFiltrados.map((produto) => (
+                  <Card
+                    key={produto.id}
+                    name={produto.name}
+                    value={produto.value}
+                    imageUrl={produto.imageUrl}
+                    adicionar={() => this.somarCarrinho(produto.id)}
+                  />
+                ))}
+              </CardList>
+            ) : (
+              <Mensagem>Nenhum item encontrado</Mensagem>
+            )}
+          </Container>
+
+          <Carrinho>
+            <TituloCarrinho>Carrinho de Compras</TituloCarrinho>
+            <CarrinhoLista>
+              {this.state.carrinho.map((produto) => (
+                <CarrinhoItem key={produto.id}>
+                  <BoxViagem>
+                    <NomeViagem>{produto.name}</NomeViagem>
+                    <PrecoContainer>
+                      <ValorProduto>
+                        <strong>R$</strong> {produto.value}
+                      </ValorProduto>
+                      <p>{produto.contador}x</p>
+                      <p>
+                        <strong>R$</strong> {produto.total}
+                      </p>
+                    </PrecoContainer>
+                  </BoxViagem>
+                  <Button
+                    type="button"
+                    onClick={() => this.removeProduto(produto.id)}
+                  >
+                    <Icone icon={faTrashAlt} />
+                  </Button>
+                </CarrinhoItem>
               ))}
-            </CardList>
-          ) : (
-            <Mensagem>Nenhum item encontrado</Mensagem>
-          )}
-        </Container>
+            </CarrinhoLista>
+
+            <TotalCarrinho>Total: R$ {totalCarrinho}</TotalCarrinho>
+          </Carrinho>
+        </BoxCompras>
 
         <Titulo>Desenvolvedores</Titulo>
         <BoxDev>
-          <CardDev></CardDev>
-          <CardDev></CardDev>
-          <CardDev></CardDev>
+          <CardDev
+            name="Hugo Brito"
+            apresentacao="Sócio do projeto Dream Rocket e estudante do curso Web Full Stack na
+            Labenu"
+            img={Hugo}
+          ></CardDev>
+          <CardDev
+            name="Ingrid Flack"
+            apresentacao="Sócia do projeto Dream Rocket e estudante do curso Web Full Stack na
+            Labenu"
+            img={Ingrid}
+          ></CardDev>
+          <CardDev
+            name="Leandro Wilker"
+            apresentacao="Sócio do projeto Dream Rocket e estudante do curso Web Full Stack na
+            Labenu"
+            img={Leandro}
+          ></CardDev>
         </BoxDev>
 
-        <Footer>
-          <RedesSociais icon={faFacebookSquare} />
-          <RedesSociais icon={faInstagramSquare} />
-          <RedesSociais icon={faTwitterSquare} />
-        </Footer>
+        <Rodape />
       </>
     );
   }
 }
-
-const Mensagem = styled.p`
-  font-size: 20px;
-  text-align: center;
-  margin: 40px 0 0;
-`;
 
 export default App;
