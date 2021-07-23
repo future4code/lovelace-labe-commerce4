@@ -1,14 +1,20 @@
 import React from "react";
 import "./App.css";
+
 import Header from "./components/Header";
 import Card from "./components/Card";
 import CardDev from "./components/CardDev";
-import Rodape from "./components/Footer";
+import Rodape from "./components/Rodape";
+
+import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { Button } from "./components/Card/styles";
+
 import styled from "styled-components";
 
 import Ingrid from "./img/perfil.jpg";
 import Hugo from "./img/hugo.jpeg";
 import Leandro from "./img/leandro.jpeg";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // ESTILIZAÇÃO DO APP
 
@@ -101,6 +107,83 @@ const BoxDev = styled.div`
   }
 `;
 
+// Estilização do Carrinho
+
+const TituloCarrinho = styled.h3`
+  text-align: center;
+`;
+const Carrinho = styled.div`
+  position: sticky;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  top: 25px;
+  padding: 25px;
+  margin: 25px;
+  max-height: 400px;
+  width: 100%;
+  max-width: 300px;
+
+  > p {
+    margin: 20px 0 0;
+  }
+`;
+
+const CarrinhoLista = styled.div`
+  overflow: auto;
+`;
+
+const CarrinhoItem = styled.div`
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+
+  ${Button} {
+    margin: 0;
+  }
+
+  & + & {
+    margin-top: 20px;
+  }
+`;
+
+const ValorProduto = styled.p``;
+
+const TotalCarrinho = styled.div`
+  text-align: end;
+  font-size: 16px;
+  font-weight: 700;
+`;
+const PrecoContainer = styled.div`
+  align-items: center;
+  display: flex;
+  font-size: 12px;
+
+  &,
+  p {
+    margin: 0;
+  }
+
+  p + p {
+    margin-left: 10px;
+  }
+`;
+
+const Icone = styled(FontAwesomeIcon)``;
+
+const BoxViagem = styled.div``;
+
+const NomeViagem = styled.p`
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
+`;
+
+const BoxCompras = styled.div`
+  display: flex;
+  align-items: flex-start;
+`;
+
 class App extends React.Component {
   state = {
     produtos: [
@@ -166,6 +249,7 @@ class App extends React.Component {
     ordenacao: "ASC",
     inputValorMinimo: "",
     inputValorMaximo: "",
+    carrinho: [],
   };
 
   onChangeValorMinimo = (event) => {
@@ -182,6 +266,13 @@ class App extends React.Component {
 
   onChangeBusca = (event) => {
     this.setState({ inputBusca: event.target.value });
+  };
+
+  removeProduto = (id) => {
+    const carrinhoAtualizado = this.state.carrinho.filter((produto) => {
+      return id !== produto.id;
+    });
+    this.setState({ carrinho: carrinhoAtualizado });
   };
 
   // onInputChange = ({ target }) => {
@@ -247,8 +338,34 @@ class App extends React.Component {
     return listaFiltrada;
   };
 
+  somarCarrinho = (id) => {
+    let selecionarProduto = this.state.produtos.find(
+      (produto) => produto.id === id
+    );
+    let buscarCarrinho = this.state.carrinho.find(
+      (produto) => produto.id === id
+    );
+    if (buscarCarrinho !== undefined) {
+      const index = this.state.carrinho.findIndex(
+        (produto) => produto.id === id
+      );
+      const novoEstado = [...this.state.carrinho];
+      novoEstado[index].contador = this.state.carrinho[index].contador + 1;
+      novoEstado[index].total =
+        this.state.carrinho[index].value * novoEstado[index].contador;
+      return this.setState(novoEstado);
+    }
+    selecionarProduto.total = selecionarProduto.value;
+    selecionarProduto.contador = 1;
+    this.setState({ carrinho: [...this.state.carrinho, selecionarProduto] });
+  };
+
   render() {
     const itensFiltrados = this.filtrarLista();
+    const totalCarrinho = this.state.carrinho.reduce(
+      (acc, curr) => acc + curr.total,
+      0
+    );
 
     return (
       <>
@@ -256,58 +373,90 @@ class App extends React.Component {
           inputBusca={this.state.inputBusca}
           onChangeBusca={this.onChangeBusca}
         />
+        <BoxCompras>
+          <Container>
+            <Titulo>Confira nossos destinos</Titulo>
 
-        <Container>
-          <Titulo>Confira nossos destinos</Titulo>
+            <Form>
+              <Valores>
+                <Valor>
+                  <Label>Valor mínimo:</Label>
+                  <Filtro
+                    type="number"
+                    onChange={this.onChangeValorMinimo}
+                    value={this.state.inputValorMinimo}
+                    min="0"
+                  />
+                </Valor>
 
-          <Form>
-            <Valores>
-              <Valor>
-                <Label>Valor mínimo:</Label>
-                <Filtro
-                  type="number"
-                  onChange={this.onChangeValorMinimo}
-                  value={this.state.inputValorMinimo}
-                  min="0"
-                />
-              </Valor>
+                <Valor>
+                  <Label>Valor máximo:</Label>
+                  <Filtro
+                    type="number"
+                    onChange={this.onChangeValorMaximo}
+                    value={this.state.inputValorMaximo}
+                    min="0"
+                  />
+                </Valor>
+              </Valores>
 
-              <Valor>
-                <Label>Valor máximo:</Label>
-                <Filtro
-                  type="number"
-                  onChange={this.onChangeValorMaximo}
-                  value={this.state.inputValorMaximo}
-                  min="0"
-                />
-              </Valor>
-            </Valores>
+              <Ordenar
+                onChange={this.alteraOrdenacao}
+                value={this.state.ordenacao}
+              >
+                <option value="">Ordenar</option>
+                <option value="DESC">Decrescente</option>
+                <option value="ASC">Crescente</option>
+              </Ordenar>
+            </Form>
 
-            <Ordenar
-              onChange={this.alteraOrdenacao}
-              value={this.state.ordenacao}
-            >
-              <option value="">Ordenar</option>
-              <option value="DESC">Decrescente</option>
-              <option value="ASC">Crescente</option>
-            </Ordenar>
-          </Form>
+            {itensFiltrados.length > 0 ? (
+              <CardList>
+                {itensFiltrados.map((produto) => (
+                  <Card
+                    key={produto.id}
+                    name={produto.name}
+                    value={produto.value}
+                    imageUrl={produto.imageUrl}
+                    adicionar={() => this.somarCarrinho(produto.id)}
+                  />
+                ))}
+              </CardList>
+            ) : (
+              <Mensagem>Nenhum item encontrado</Mensagem>
+            )}
+          </Container>
 
-          {itensFiltrados.length > 0 ? (
-            <CardList>
-              {itensFiltrados.map((produto) => (
-                <Card
-                  key={produto.id}
-                  name={produto.name}
-                  value={produto.value}
-                  imageUrl={produto.imageUrl}
-                />
+          <Carrinho>
+            <TituloCarrinho>Carrinho de Compras</TituloCarrinho>
+            <CarrinhoLista>
+              {this.state.carrinho.map((produto) => (
+                <CarrinhoItem key={produto.id}>
+                  <BoxViagem>
+                    <NomeViagem>{produto.name}</NomeViagem>
+                    <PrecoContainer>
+                      <ValorProduto>
+                        <strong>R$</strong> {produto.value}
+                      </ValorProduto>
+                      <p>{produto.contador}x</p>
+                      <p>
+                        <strong>R$</strong> {produto.total}
+                      </p>
+                    </PrecoContainer>
+                  </BoxViagem>
+                  <Button
+                    type="button"
+                    onClick={() => this.removeProduto(produto.id)}
+                  >
+                    <Icone icon={faTrashAlt} />
+                  </Button>
+                </CarrinhoItem>
               ))}
-            </CardList>
-          ) : (
-            <Mensagem>Nenhum item encontrado</Mensagem>
-          )}
-        </Container>
+            </CarrinhoLista>
+
+            <TotalCarrinho>Total: R$ {totalCarrinho}</TotalCarrinho>
+          </Carrinho>
+        </BoxCompras>
 
         <Titulo>Desenvolvedores</Titulo>
         <BoxDev>
