@@ -1,3 +1,4 @@
+![6](https://user-images.githubusercontent.com/8032317/126835179-975cde52-13d9-4990-b7fe-e0f19792b4b1.png)
 # Dream Rocket
 
 ## Desenvolvedores
