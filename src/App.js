@@ -3,14 +3,12 @@ import "./App.css";
 import Header from "./components/Header";
 import Card from "./components/Card";
 import CardDev from "./components/CardDev";
-import Rodape from "./components/Rodape";
+import Rodape from "./components/Footer";
 import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faFacebookSquare,
-  faTwitterSquare,
-  faInstagramSquare,
-} from "@fortawesome/free-brands-svg-icons";
+
+import Ingrid from "./img/perfil.jpg";
+import Hugo from "./img/hugo.jpeg";
+import Leandro from "./img/leandro.jpeg";
 
 // ESTILIZAÇÃO DO APP
 
@@ -87,6 +85,8 @@ const Valores = styled.div`
 
 const Valor = styled.div`
   display: flex;
+  line-height: 1;
+  align-items: center;
 `;
 
 const BoxDev = styled.div`
@@ -256,6 +256,7 @@ class App extends React.Component {
           inputBusca={this.state.inputBusca}
           onChangeBusca={this.onChangeBusca}
         />
+
         <Container>
           <Titulo>Confira nossos destinos</Titulo>
 
@@ -310,9 +311,24 @@ class App extends React.Component {
 
         <Titulo>Desenvolvedores</Titulo>
         <BoxDev>
-          <CardDev></CardDev>
-          <CardDev></CardDev>
-          <CardDev></CardDev>
+          <CardDev
+            name="Hugo Brito"
+            apresentacao="Sócio do projeto Dream Rocket e estudante do curso Web Full Stack na
+            Labenu"
+            img={Hugo}
+          ></CardDev>
+          <CardDev
+            name="Ingrid Flack"
+            apresentacao="Sócia do projeto Dream Rocket e estudante do curso Web Full Stack na
+            Labenu"
+            img={Ingrid}
+          ></CardDev>
+          <CardDev
+            name="Leandro Wilker"
+            apresentacao="Sócio do projeto Dream Rocket e estudante do curso Web Full Stack na
+            Labenu"
+            img={Leandro}
+          ></CardDev>
         </BoxDev>
 
         <Rodape />

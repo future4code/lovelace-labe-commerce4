@@ -68,4 +68,8 @@ export const Img = styled.img`
   display: block;
   max-width: 100%;
   border-radius: 4px;
+  height: 200px;
+  width: 200px;
+  object-fit: cover;
+  object-position: center;
 `;
