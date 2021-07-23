@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { CardBox, Imagem, Titulo, Descricao, Button, Carrinho } from "./styles";
 
-import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
+import { faCartPlus, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
 export default class Card extends Component {
   render() {
@@ -12,7 +12,7 @@ export default class Card extends Component {
         <Descricao>
           Viagem a partir de <strong>R${this.props.value}</strong>
         </Descricao>
-        <Button>
+        <Button onClick={this.props.adicionar}>
           Comprar
           <Carrinho icon={faCartPlus} />
         </Button>

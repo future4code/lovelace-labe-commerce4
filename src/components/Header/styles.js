@@ -47,7 +47,6 @@ export const Input = styled.input`
 export const Carrinho = styled(FontAwesomeIcon)`
   font-size: 25px;
   color: #000;
-  cursor: pointer;
   margin-right: 30px;
 
   @media screen and (max-width: 576px) {
