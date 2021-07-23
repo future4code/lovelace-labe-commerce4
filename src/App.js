@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 import Header from "./components/Header";
+import Intro from "./components/Intro"
 import Card from "./components/Card";
 import CardDev from "./components/CardDev";
 import styled from "styled-components";
@@ -231,6 +232,13 @@ class App extends React.Component {
           inputBusca={this.state.inputBusca}
           onChangeBusca={this.onChangeBusca}
         />
+
+        <div>
+        <Intro>
+          
+        </Intro>
+        </div>
+
         <Container>
           <Titulo>Confira nossos destinos</Titulo>
 
